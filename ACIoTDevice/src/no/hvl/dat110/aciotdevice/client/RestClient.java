@@ -22,12 +22,9 @@ public class RestClient {
 	private int port = Configuration.port;
 
 	private String url = "http://" + host + ":" + port;
-	private String urlPath = url + logpath;
+	private String urlLog = url + logpath;
 
 	public void doPostAccessEntry(String message) {
-
-
-		System.out.println(urlPath);
 		
 		String jsonString = new Gson().toJson(new AccessMessage(message));
 
@@ -35,7 +32,7 @@ public class RestClient {
 
 		OkHttpClient client = new OkHttpClient();
 
-		Request req = new Request.Builder().url(urlPath).post(reqBody).build();
+		Request req = new Request.Builder().url(urlLog).post(reqBody).build();
 
 		try (Response res = client.newCall(req).execute()) {
 			System.out.println(res.body().string());

@@ -3,6 +3,7 @@ package no.hvl.dat110.aciotdevice.client;
 import java.io.IOException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -44,11 +45,25 @@ public class RestClient {
 	private static String codepath = "/accessdevice/code";
 
 	public AccessCode doGetAccessCode() {
-
+		
 		AccessCode code = null;
-
-		// TODO: implement a HTTP GET on the service to get current access code
-
+		
+		GsonBuilder builder = new GsonBuilder(); 
+		
+		Gson gson = builder.create();
+		
+		OkHttpClient client = new OkHttpClient();
+		
+		Request request = new Request.Builder().url(url + codepath).get().build();
+		
+		try (Response response = client.newCall(request).execute()){
+			 String resbody = response.body().string(); 
+			 
+			code = gson.fromJson(resbody, AccessCode.class);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+	}
 		return code;
 	}
 }
